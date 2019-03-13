@@ -1,7 +1,6 @@
 package browsers;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,85 +10,79 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.How;
 
 public class BrowsersMethodsTest {
 
-    public static WebDriver driver;
+    private static WebDriver driver;
+    private enum Browsers {FIREFOX, CHROME, EDGE, IE, SAFARI,FIREFOX_HEADLESS,CHROME_HEADLESS}
 
     public static void main(String[] args) {
-        setupBrowser("firefox");
+        setupBrowser(Browsers.IE);
         visit("https://the-internet.herokuapp.com/login");
-        fill(getElement("id","username"),"tomsmith");
-        fill(getElement("id","password"),"SuperSecretPassword!");
-        click(getElement("tagname","button"));
+        fill(How.ID,"username","tomsmith");
+        fill(How.ID,"password","SuperSecretPassword!");
+        click(How.TAG_NAME,"button");
+
     }
 
-    public static void click(WebElement element) {
-        element.click();
+    private static void click(How how, String locator) {
+        getElement(how, locator).click();
     }
 
-    public static void fill(WebElement element, String text) {
-        element.sendKeys(text);
+    private static void fill(How how, String locator, String text) {
+
+        getElement(how, locator).sendKeys(text);
     }
 
-    public static void visit(String url) {
+    private static void visit(String url) {
         driver.get(url);
     }
 
-    public static WebElement getElement(String how, String locator) {
-        WebElement element = null;
-        if (how.equalsIgnoreCase("name")) {
-            element = driver.findElement(By.name(locator));
-        } else if (how.equalsIgnoreCase("id")) {
-            element = driver.findElement(By.id(locator));
-        } else if (how.equalsIgnoreCase("xpath")) {
-            element = driver.findElement(By.xpath(locator));
-        } else if (how.equalsIgnoreCase("css")) {
-            element = driver.findElement(By.cssSelector(locator));
-        } else if (how.equalsIgnoreCase("tagname")) {
-            element = driver.findElement(By.tagName(locator));
-        } else {
-            System.err.println("Your input is invalid.");
-        }
-        return element;
+    private static WebElement getElement(How how, String locator) {
+        return driver.findElement(how.buildBy(locator));
     }
 
-    /**
-     * @param browser: firefox|chrome|edge|ie|safari|firefoxHeadless|chromeHeadless
-     */
-    private static void setupBrowser(String browser) {
-        if ("firefox".equalsIgnoreCase(browser)) {
-            WebDriverManager.firefoxdriver().setup();
-            driver = new FirefoxDriver();
-        } else if ("chrome".equalsIgnoreCase(browser)) {
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
-        } else if ("edge".equalsIgnoreCase(browser)) {
-            WebDriverManager.edgedriver().setup();
-            driver = new EdgeDriver();
-        } else if ("ie".equalsIgnoreCase(browser)) {
-            WebDriverManager.iedriver().setup();
-            driver = new InternetExplorerDriver();
-        } else if ("safari".equalsIgnoreCase(browser)) {
-            System.out.println("There is no safari browser on this machine");
-        } else if ("firefoxHeadless".equalsIgnoreCase(browser)) {
-            WebDriverManager.firefoxdriver().setup();
+    private static void setupBrowser(Browsers browser) {
+        switch (browser){
+            case FIREFOX:
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                break;
+            case CHROME:
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+                break;
+            case EDGE:
+                WebDriverManager.edgedriver().setup();
+                driver = new EdgeDriver();
+                break;
+            case IE:
+                WebDriverManager.iedriver().setup();
+                driver = new InternetExplorerDriver();
+                break;
+            case SAFARI:
+                System.out.println("There is no safari browser on this machine");
+                break;
+            case FIREFOX_HEADLESS:
+                WebDriverManager.firefoxdriver().setup();
 
-            FirefoxBinary firefoxBinary = new FirefoxBinary();
-            firefoxBinary.addCommandLineOptions("--headless");
+                FirefoxBinary firefoxBinary = new FirefoxBinary();
+                firefoxBinary.addCommandLineOptions("--headless");
 
-            FirefoxOptions firefoxOptions = new FirefoxOptions();
-            firefoxOptions.setBinary(firefoxBinary);
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.setBinary(firefoxBinary);
 
-            driver = new FirefoxDriver(firefoxOptions);
-        } else if ("chromeHeadless".equalsIgnoreCase(browser)) {
-            WebDriverManager.chromedriver().setup();
+                driver = new FirefoxDriver(firefoxOptions);
+                break;
+            case CHROME_HEADLESS:
+                WebDriverManager.chromedriver().setup();
 
-            ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.addArguments("--headless");
-            driver = new ChromeDriver(chromeOptions);
-        } else {
-            System.out.println("Sorry, your browser is not supported!");
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--headless");
+                driver = new ChromeDriver(chromeOptions);
+                break;
         }
     }
+
 }
