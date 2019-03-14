@@ -42,7 +42,7 @@ public class BrowsersMethodsTest {
     private static WebElement getElement(How how, String locator) {
         return driver.findElement(how.buildBy(locator));
     }
-
+//test
     private static void setupBrowser(Browsers browser) {
         switch (browser){
             case FIREFOX:
