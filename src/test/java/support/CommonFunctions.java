@@ -1,6 +1,6 @@
 package support;
 
-import browsers.BrowsersMethodsTest;
+//import browsers.BrowsersMethodsTest;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

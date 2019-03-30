@@ -1,10 +1,9 @@
-package browsers;
+package modules.browsers;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class EdgeTest {
     public static void main(String[] args) {

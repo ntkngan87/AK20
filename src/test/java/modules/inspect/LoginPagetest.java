@@ -1,4 +1,4 @@
-package inspect;
+package modules.inspect;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
