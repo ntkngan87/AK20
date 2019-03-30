@@ -1,0 +1,12 @@
+<suite name="Demo TestNG">
+    <test name="annotations">
+        <classes>
+            <class name="modules.inspect.BMITest"/>
+        </classes>
+    </test>
+    <test name="annotations -1">
+        <classes>
+            <class name="modules.DebugTest"/>
+        </classes>
+    </test>
+</suite>
